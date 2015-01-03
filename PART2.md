@@ -10,7 +10,7 @@ One of the most frequently used monads is the sequence monad (known in the Haske
   (* a b))
 ```
 
-A for form resembles a let form not only syntactically. It has the same structure: a list of binding expressions, in which each expression can use the bindings from the preceding ones, and a final result expressions that typically depends on all the bindings as well. The difference between let and for is that let binds a single value to each symbol, whereas for binds several values in sequence. The expressions in the binding list must therefore evaluate to sequences, and the result is a sequence as well. The for form can also contain conditions in the form of :when and :while clauses, which I will discuss later. From the monad point of view of composable computations, the sequences are seen as the results of non-deterministic computations, i.e. computations that have more than one result.
+A for form resembles a let form not only syntactically. It has the same structure: a list of binding expressions, in which each expression can use the bindings from the preceding ones, and a final result expressions that typically depends on all the bindings as well. The difference between let and for is that let binds a single value to each symbol, whereas for binds several values in sequence. The expressions in the binding list must therefore evaluate to sequences, and the result is a sequence as well. The for form can also contain conditions in the form of ``:when`` and ``:while`` clauses, which I will discuss later. From the monad point of view of composable computations, the sequences are seen as the results of non-deterministic computations, i.e. computations that have more than one result.
 
 Using the monad library, the above loop is written as
 
@@ -122,7 +122,7 @@ Again this becomes a bit clearer using domonad syntax:
      (function2 y)))
 ```
 
-It is not necessary to remember the monad laws for using monads, they are of importance only when you start to define your own monads. What you should remember about ``m-result`` is that ``(m-result x)`` represents the monadic computation whose result is x. For the sequence monad, this means a sequence with the single element ``x``. For the identity monad and the maybe monad, which I have presented in the first part of the tutorial, there is no particular structure to monadic expressions, and therefore ``m-result`` is just the identity function.
+It is not necessary to remember the monad laws for using monads, they are of importance only when you start to define your own monads. What you should remember about ``m-result`` is that ``(m-result x)`` represents the monadic computation whose result is ``x``. For the sequence monad, this means a sequence with the single element ``x``. For the identity monad and the maybe monad, which I have presented in the first part of the tutorial, there is no particular structure to monadic expressions, and therefore ``m-result`` is just the identity function.
 
 Now it’s time to relax: the most difficult material has been covered. I will return to monad theory in the next part, where I will tell you more about the ``:when`` clauses in for loops. The rest of this part will be of a more pragmatic nature.
 
