@@ -1,13 +1,14 @@
 A monad tutorial for Clojure programmers (part 3)
+=================
 
 Before moving on to the more advanced aspects of monads, let’s recapitulate what defines a monad (see part 1 and part 2 for explanations):
 
 A data structure that represents the result of a computation, or the computation itself. We haven’t seen an example of the latter case yet, but it will come soon.
 A function ``m-result`` that converts an arbitrary value to a monadic data structure equivalent to that value.
 A function ``m-bind`` that binds the result of a computation, represented by the monadic data structure, to a name (using a function of one argument) to make it available in the following computational step.
-Taking the sequence monad as an example, the data structure is the sequence, representing the outcome of a non-deterministic computation, ``m-result`` is the function list, which converts any value into a list containing just that value, and m-bindis a function that executes the remaining steps once for each element in a sequence, and removes one level of nesting in the result.
+Taking the sequence monad as an example, the data structure is the sequence, representing the outcome of a non-deterministic computation, ``m-result`` is the function list, which converts any value into a list containing just that value, and ``m-bind`` is a function that executes the remaining steps once for each element in a sequence, and removes one level of nesting in the result.
 
-The three ingredients above are what defines a monad, under the condition that the three monad laws are respected. Some monads have two additional definitions that make it possible to perform additional operations. These two definitions have the names ``m-zero`` and ``m-plus``. ``m-zero`` represents a special monadic value that corresponds to a computation with no result. One example is nil in the maybe monad, which typically represents a failure of some kind. Another example is the empty sequence in the sequence monad. The identity monad is an example of a monad that has no ``m-zero``.
+The three ingredients above are what defines a monad, under the condition that the three monad laws are respected. Some monads have two additional definitions that make it possible to perform additional operations. These two definitions have the names ``m-zero`` and ``m-plus``. ``m-zero`` represents a special monadic value that corresponds to a computation with no result. One example is ``nil`` in the maybe monad, which typically represents a failure of some kind. Another example is the empty sequence in the sequence monad. The identity monad is an example of a monad that has no ``m-zero``.
 
 ``m-plus`` is a function that combines the results of two or more computations into a single one. For the sequence monad, it is the concatenation of several sequences. For the maybe monad, it is a function that returns the first of its arguments that is not ``nil``.
 
@@ -21,7 +22,7 @@ There is a condition that has to be satisfied by the definitions of ``m-zero`` a
 
 In words, combining ``m-zero`` with any monadic expression must yield the same expression. You can easily verify that this is true for the two examples (maybe and sequence) given above.
 
-One benefit of having an ``m-zero`` in a monad is the possibility to use conditions. In the first part, I promised to return to the :when clauses in Clojure’s for forms, and now the time has come to discuss them. A simple example is
+One benefit of having an ``m-zero`` in a monad is the possibility to use conditions. In the first part, I promised to return to the ``:when`` clauses in Clojure’s for forms, and now the time has come to discuss them. A simple example is
 
 ```clj
 (for [a (range 5)
@@ -29,7 +30,7 @@ One benefit of having an ``m-zero`` in a monad is the possibility to use conditi
   (* 2 a))
 ```
 
-The same construction is possible with domonad:
+The same construction is possible with ``domonad``:
 
 ```clj
 (domonad sequence
@@ -64,7 +65,7 @@ Inserting the definitions of ``m-bind``, ``m-result``, and ``m-zero``, we finall
   (if (odd? a) (list (* 2 a)) (list))) (range 5)))
 ```
 
-The result of map is a sequence of lists that have zero or one elements: zero for even values (the value of ``m-zero``) and one for odd values (produced by ``m-result``). concat makes a single flat list out of this, which contains only the elements that satisfy the ``:when`` clause.
+The result of ``map`` is a sequence of lists that have zero or one elements: zero for even values (the value of ``m-zero``) and one for odd values (produced by ``m-result``). ``concat`` makes a single flat list out of this, which contains only the elements that satisfy the ``:when`` clause.
 
 As for ``m-plus``, it is in practice used mostly with the maybe and sequence monads, or with variations of them. A typical use would be a search algorithm (think of a parser, a regular expression search, a database query) that can succeed (with one or more results) or fail (no results). ``m-plus`` would then be used to pursue alternative searches and combine the results into one (sequence monad), or to continue searching until a result is found (maybe monad). Note that it is perfectly possible in principle to have a monad with an ``m-zero`` but no ``m-plus``, though in all common cases an ``m-plus`` can be defined as well if an ``m-zero`` is known.
 
@@ -76,7 +77,7 @@ The state monad differs from the monads that we have seen before in that its dat
 
 Let’s start with a simple but frequent situation: the state that your code deals with takes the form of a map. You may consider that map to be a namespace in an imperative languages, with each key defining a variable. Two basic operations are reading the value of a variable, and modifying that value. They are already provided in the Clojure monad library, but I will show them here anyway because they make nice examples.
 
-First, we look at fetch-val, which retrieves the value of a variable:
+First, we look at ``fetch-val``, which retrieves the value of a variable:
 
 ```clj
 (defn fetch-val [key]
@@ -86,7 +87,7 @@ First, we look at fetch-val, which retrieves the value of a variable:
 
 Here we have a simple state-monad-value-generating function. It returns a function of a state variable s which, when executed, returns a vector of the return value and the new state. The return value is the value corresponding to the key in the map that is the state value. The new state is just the old one – a lookup should not change the state of course.
 
-Next, let’s look at set-val, which modifies the value of a variable and returns the previous value:
+Next, let’s look at ``set-val``, which modifies the value of a variable and returns the previous value:
 
 ```clj
 (defn set-val [key val]
@@ -134,7 +135,7 @@ The definition of ``m-bind`` is more interesting:
       ((f v) ss))))
 ```
 
-Obviously, it returns a function of a state variable ``s``. When that function is executed, it first runs the computation described by mv (the first ‘statement’ in the chain set up by ``m-bind``) by applying it to the state ``s``. The return value is decomposed into result ``v`` and new state ``ss``. The result of the first step, ``v``, is injected into the rest of the computation by calling ``f`` on it (like for the other ``m-bind`` functions that we have seen). The result of that call is of course another state-monad value, and thus a function of a state variable. When we are inside our ``(fn [s] ...)``, we are already at the execution stage, so we have to call that function on the state ss, the one that resulted from the execution of the first computational step.
+Obviously, it returns a function of a state variable ``s``. When that function is executed, it first runs the computation described by mv (the first 'statement' in the chain set up by ``m-bind``) by applying it to the state ``s``. The return value is decomposed into result ``v`` and new state ``ss``. The result of the first step, ``v``, is injected into the rest of the computation by calling ``f`` on it (like for the other ``m-bind`` functions that we have seen). The result of that call is of course another state-monad value, and thus a function of a state variable. When we are inside our ``(fn [s] ...)``, we are already at the execution stage, so we have to call that function on the state ss, the one that resulted from the execution of the first computational step.
 
 The state monad is one of the most basic monads, of which many variants are in use. Usually such a variant adds something to ``m-bind`` that is specific to the kind of state being handled. An example is the the stream monad in ``clojure.contrib.stream-utils``. (NOTE: the stream monad has not been migrated to the new Clojure contrib library set.) Its state describes a stream of data items, and the ``m-bind`` function checks for invalid values and for the end-of-stream condition in addition to what the basic ``m-bind`` of the state monad does.
 
@@ -185,7 +186,7 @@ Second, we replace let by domonad and choose the writer monad with a vector accu
 )
 ```
 
-Finally, we run fib-trace and look at the result:
+Finally, we run ``fib-trace`` and look at the result:
 
 ```clj
 (fib-trace 3)
