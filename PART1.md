@@ -90,4 +90,4 @@ The maybe monad represents computations whose result is maybe a valid value, but
 
 If its input value is non-nil, it calls the supplied function, just as in the identity monad. Recall that this function represents the rest of the computation, i.e. all following steps. If the value is ``nil``, then ``m-bind`` returns ``nil`` and the rest of the computation is never called. You can thus call ``(f 1)``, yielding 2 as before, but also ``(f nil)`` yielding ``nil``, without having to add nil-detecting code after every step of your computation, because ``m-bind`` does it behind the scenes.
 
-In part 2, I will introduce some more monads, and look at some generic functions that can be used in any monad to aid in composing computations.
+In [part 2](PART2.md), I will introduce some more monads, and look at some generic functions that can be used in any monad to aid in composing computations.
