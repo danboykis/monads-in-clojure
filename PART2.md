@@ -208,4 +208,4 @@ A usage example is the traversal of hierarchies. The Clojure function parents yi
 You may notice that some classes can occur more than once in the result, because they are the base class of more than one class in the generation below. In fact, we ought to use sets instead of sequences for representing the ascendants at each generation. Well… that’s easy. Just replace ``sequence-m`` by ``set-m`` and run it again!
 
 
-In part 3, I will come back to the ``:when`` clause in for loops, and show how it is implemented and generalized in terms of monads. I will also explain another monad or two. Stay tuned!
+In [part 3](PART3.md), I will come back to the ``:when`` clause in for loops, and show how it is implemented and generalized in terms of monads. I will also explain another monad or two. Stay tuned!
