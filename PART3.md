@@ -1,7 +1,7 @@
 A monad tutorial for Clojure programmers (part 3)
 =================
 
-Before moving on to the more advanced aspects of monads, let’s recapitulate what defines a monad (see part 1 and part 2 for explanations):
+Before moving on to the more advanced aspects of monads, let’s recapitulate what defines a monad (see [part 1](PART1.md) and [part 2](PART2.md) for explanations):
 
 A data structure that represents the result of a computation, or the computation itself. We haven’t seen an example of the latter case yet, but it will come soon.
 A function ``m-result`` that converts an arbitrary value to a monadic data structure equivalent to that value.
@@ -197,4 +197,4 @@ The first element of the return value, 2, is the result of the function fib. The
 
 Note that it is sufficient to comment out the lines with the calls to write and change the monad to ``identity-m`` to obtain a standard ``fib`` function with no protocol – try it out for yourself!
 
-Part 4 will show you how to define your own monads by combining monad building blocks called monad transformers. As an illustration, I will explain the probability monad and how it can be used for Bayesian estimates when combined with the maybe-transformer.
+[Part 4](PART4.md) will show you how to define your own monads by combining monad building blocks called monad transformers. As an illustration, I will explain the probability monad and how it can be used for Bayesian estimates when combined with the maybe-transformer.
