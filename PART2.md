@@ -1,4 +1,5 @@
 A monad tutorial for Clojure programmers (part 2)
+=================
 
 In the first part of this tutorial, I have introduced the two most basic monads: the identity monad and the maybe monad. In this part, I will continue with the sequence monad, which will be the occasion to explain the role of the mysterious ``m-result`` function. I will also show a couple of useful generic monad operations.
 
@@ -128,7 +129,7 @@ Now it’s time to relax: the most difficult material has been covered. I will r
 
 You may have wondered what the point of the identity and sequence monads is, given that Clojure already contains fully equivalent forms. The answer is that there are generic operations on computations that have an interpretation in any monad. Using the monad library, you can write functions that take a monad as an argument and compose computations in the given monad. I will come back to this later with a concrete example. The monad library also contains some useful predefined operations for use with any monad, which I will explain now. They all have names starting with the prefix m-.
 
-Perhaps the most frequently used generic monad function is ``m-lift``. It converts a function of n standard value arguments into a function of n monadic expressions that returns a monadic expression. The new function contains implicit m-bind and m-result calls. As a simple example, take
+Perhaps the most frequently used generic monad function is ``m-lift``. It converts a function of n standard value arguments into a function of n monadic expressions that returns a monadic expression. The new function contains implicit ``m-bind`` and ``m-result`` calls. As a simple example, take
 
 ```clj
 (def nil-respecting-addition
@@ -136,7 +137,7 @@ Perhaps the most frequently used generic monad function is ``m-lift``. It conver
     (m-lift 2 +)))
 ```
 
-This is a function that returns the sum of two arguments, just like + does, except that it automatically returns ``nil`` when either of its arguments is ``nil``. Note that ``m-lift`` needs to know the number of arguments that the function has, as there is no way to obtain this information by inspecting the function itself.
+This is a function that returns the sum of two arguments, just like ``+`` does, except that it automatically returns ``nil`` when either of its arguments is ``nil``. Note that ``m-lift`` needs to know the number of arguments that the function has, as there is no way to obtain this information by inspecting the function itself.
 
 To illustrate how ``m-lift`` works, I will show you an equivalent definition in terms of ``domonad``:
 
@@ -160,7 +161,7 @@ Exercice: The following function is equivalent to a well-known built-in Clojure 
     ( (m-lift 1 f) xs )))
 ```
 
-Another popular monad operation is m-seq. It takes a sequence of monadic expressions, and returns a sequence of their result values. In terms of domonad, the expression ``(m-seq [a b c])`` becomes
+Another popular monad operation is ``m-seq``. It takes a sequence of monadic expressions, and returns a sequence of their result values. In terms of domonad, the expression ``(m-seq [a b c])`` becomes
 
 ```clj
 (domonad
