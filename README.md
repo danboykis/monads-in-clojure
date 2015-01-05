@@ -7,7 +7,7 @@ programmers. It can be considered an introduction to the
 
 The tutorial was published on a blog hosted at
 [onclojure.com](http://onclojure.com), which seems to have disappeared
-in the meantime. @danboykis recovered it from
+in the meantime. [Dan Boykis](http://github.com/danboykis) recovered it from
 [archive.org](http://archive.org/) and reformatted it in Markdown,
 ready for reading right here on GitHub. For now this repository
 contains just this copy of the original tutorial, but I may
