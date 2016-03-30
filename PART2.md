@@ -168,7 +168,7 @@ Another popular monad operation is ``m-seq``. It takes a sequence of monadic exp
   [x a
    y b
    z c]
-  '(x y z))
+  (list x y z))
 ```
 
 Here is an example of how you might want to use it:
