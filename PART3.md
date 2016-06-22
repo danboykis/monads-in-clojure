@@ -148,7 +148,7 @@ Here is a concrete example: the well-known Fibonacci function in its most straig
   (if (< n 2)
     n
     (let [n1 (dec n)
-      n2 (dec n1)]
+          n2 (dec n1)]
       (+ (fib n1) (fib n2)))))
 ```
 
@@ -159,9 +159,9 @@ Let’s add some protocol of the computation in order to see which calls are mad
   (if (< n 2)
     n
     (let [n1 (dec n)
-      n2 (dec n1)
-      f1 (fib n1)
-      f2 (fib n2)]
+          n2 (dec n1)
+          f1 (fib n1)
+          f2 (fib n2)]
       (+ f1 f2))))
 ```
 
@@ -175,13 +175,12 @@ Second, we replace let by domonad and choose the writer monad with a vector accu
       (m-result n)
       (domonad
         [n1 (m-result (dec n))
-     n2 (m-result (dec n1))
-     f1 (fib-trace n1)
-     _  (write [n1 f1])
-     f2 (fib-trace n2)
-     _  (write [n2 f2])
-     ]
-    (+ f1 f2))))
+         n2 (m-result (dec n1))
+         f1 (fib-trace n1)
+         _  (write [n1 f1])
+         f2 (fib-trace n2)
+         _  (write [n2 f2])]
+        (+ f1 f2))))
 
 )
 ```
